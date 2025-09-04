@@ -1,3 +1,17 @@
+# A name for your workflow
+name: Build & Deploy Hugo to Droplet
+
+# This 'on' block tells GitHub WHEN to run the action
+on:
+  # Run this workflow every time you push to the `main` branch
+  push:
+    branches:
+      - main
+  
+  # Allows you to run this workflow manually from the Actions tab on GitHub
+  workflow_dispatch:
+
+# The 'jobs' block defines what the action actually DOES
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -22,6 +36,6 @@ jobs:
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Use rsync to sync the files
+            # Use rsync to sync the 'public' directory to your server
             # The --delete flag removes old files from the server
             rsync -avz --delete ./public/ ${{ secrets.TARGET_DIR }}
