@@ -29,6 +29,10 @@ jobs:
       - name: Build
         run: hugo --minify
 
+        # ADD THIS NEW STEP TO DEBUG
+      - name: List files after build
+        run: ls -R
+
       - name: Deploy to Droplet
         uses: appleboy/ssh-action@v1.0.3
         with:
