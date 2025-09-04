@@ -6,6 +6,21 @@
     <description>Recent content in Tags on Nikolai Kozak - ITP Blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
+    <lastBuildDate>Thu, 04 Sep 2025 17:24:14 -0400</lastBuildDate>
     <atom:link href="https://itp.nyu.edu/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Another Tag</title>
+      <link>https://itp.nyu.edu/tags/another-tag/</link>
+      <pubDate>Thu, 04 Sep 2025 17:24:14 -0400</pubDate>
+      <guid>https://itp.nyu.edu/tags/another-tag/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Understanding Networks</title>
+      <link>https://itp.nyu.edu/tags/understanding-networks/</link>
+      <pubDate>Thu, 04 Sep 2025 17:24:14 -0400</pubDate>
+      <guid>https://itp.nyu.edu/tags/understanding-networks/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

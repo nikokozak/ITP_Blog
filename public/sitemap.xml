@@ -2,14 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://itp.nyu.edu/tags/another-tag/</loc>
+    <lastmod>2025-09-04T17:24:14-04:00</lastmod>
+  </url><url>
+    <loc>https://itp.nyu.edu/posts/my-first-post/</loc>
+    <lastmod>2025-09-04T17:24:14-04:00</lastmod>
+  </url><url>
     <loc>https://itp.nyu.edu/</loc>
     <lastmod>2025-09-04T17:24:14-04:00</lastmod>
   </url><url>
     <loc>https://itp.nyu.edu/posts/</loc>
     <lastmod>2025-09-04T17:24:14-04:00</lastmod>
   </url><url>
-    <loc>https://itp.nyu.edu/categories/</loc>
-  </url><url>
     <loc>https://itp.nyu.edu/tags/</loc>
+    <lastmod>2025-09-04T17:24:14-04:00</lastmod>
+  </url><url>
+    <loc>https://itp.nyu.edu/tags/understanding-networks/</loc>
+    <lastmod>2025-09-04T17:24:14-04:00</lastmod>
+  </url><url>
+    <loc>https://itp.nyu.edu/categories/</loc>
   </url>
 </urlset>
