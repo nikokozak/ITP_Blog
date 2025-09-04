@@ -29,16 +29,15 @@ jobs:
       - name: Build
         run: hugo --minify
 
-        # ADD THIS NEW STEP TO DEBUG
-      - name: List files after build
-        run: ls -R
+      - name: Install SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy to Droplet
-        uses: appleboy/rsync-deploy@v1.1.0
-        with:
-          host: ${{ secrets.DROPLET_HOST }}
-          username: ${{ secrets.DROPLET_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./public/"
-          target: ${{ secrets.TARGET_DIR }}
-          flags: "-avz --delete"
+        run: |
+          # Add the server's host key to known_hosts to avoid manual confirmation
+          ssh-keyscan -H "${{ secrets.DROPLET_HOST }}" >> ~/.ssh/known_hosts
+          
+          # Run the rsync command to sync the files
+          rsync -avz --delete ./public/ ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_HOST }}:${{ secrets.TARGET_DIR }}
