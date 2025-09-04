@@ -34,12 +34,11 @@ jobs:
         run: ls -R
 
       - name: Deploy to Droplet
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/rsync-deploy@v1.1.0
         with:
           host: ${{ secrets.DROPLET_HOST }}
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            # Use rsync to sync the 'public' directory to your server
-            # The --delete flag removes old files from the server
-            rsync -avz --delete ./public/ ${{ secrets.TARGET_DIR }}
+          source: "./public/"
+          target: ${{ secrets.TARGET_DIR }}
+          flags: "-avz --delete"
