@@ -1,41 +1,27 @@
-name: Build & Deploy Hugo to Droplet
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. Get a copy of your repository's code
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: true
 
-      # 2. Install Hugo
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
 
-      # 3. Build the website
       - name: Build
         run: hugo --minify
 
-      # 4. Deploy to your Droplet via SSH
       - name: Deploy to Droplet
-        uses: easingthemes/ssh-deploy@main
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          # Use the private key stored in GitHub Secrets
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          # The source directory on the runner
-          SOURCE: "public/"
-          # Your droplet's login credentials
-          REMOTE_HOST: ${{ secrets.DROPLET_HOST }}
-          REMOTE_USER: ${{ secrets.DROPLET_USER }}
-          # The destination directory on your droplet
-          TARGET: ${{ secrets.TARGET_DIR }}
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Use rsync to sync the files
+            # The --delete flag removes old files from the server
+            rsync -avz --delete ./public/ ${{ secrets.TARGET_DIR }}
