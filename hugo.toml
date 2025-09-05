@@ -1,4 +1,4 @@
-baseURL = 'https://itp.nyu.edu/'
+baseURL = 'https://itp.nkozak.com/'
 languageCode = 'en-us'
 title = 'Nikolai Kozak - ITP Blog'
 theme = "shibui"
