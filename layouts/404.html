@@ -1,0 +1,36 @@
+{{ define "main" }}
+  <h1>404 — Page not found</h1>
+  <p>That page doesn’t exist. Try one of these instead:</p>
+
+  <div class="terminal-nav">
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/posts/">Posts</a></li>
+        <li><a href="/tags/">All Tags</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <h2>Recent posts</h2>
+  <div class="time-list">
+    <ul>
+      {{ range first 5 (where .Site.RegularPages "Type" "in" (slice "posts" "post")) }}
+        <li>
+          <span>{{- partial "date.html" .Date -}}</span>
+          <div><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></div>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+
+  {{ if not .IsHome }}
+    <div class="terminal-nav">
+      <div class="back-nav">
+        <a href="/" class="back-link">Back to Home</a>
+      </div>
+    </div>
+  {{ end }}
+{{ end }}
+
+
