@@ -1,0 +1,31 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+
+  {{/* Only show TOC when explicitly enabled and non-empty */}}
+  {{ $tocEnabled := (or (.Param "toc") false) }}
+  {{ if $tocEnabled }}
+    {{ $toc := .TableOfContents }}
+    {{ if and $toc (ne (strings.Trim $toc) "") }}
+      <nav class="toc">
+        <strong>Table of contents</strong>
+        <div class="toc-content">
+          {{ $toc | safeHTML }}
+        </div>
+      </nav>
+    {{ end }}
+  {{ end }}
+
+  {{ .Content }}
+  {{ partial "date.html" .Date}}
+
+  {{ if not .IsHome }}
+    <div class="terminal-nav">
+      <div class="back-nav">
+        <a href="../" class="back-link">../</a>
+      </div>
+    </div>
+  {{ end }}
+{{ end }}
+
+

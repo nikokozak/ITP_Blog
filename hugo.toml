@@ -13,6 +13,22 @@ theme = "shibui"
     url = "/posts/"
     weight = 1
   [[menu.main]]
-    name = "About"
-    url = "/about/"
+    name = "Understanding Networks"
+    url = "/tags/understanding-networks/"
     weight = 2
+  [[menu.main]]
+    name = "Project Development"
+    url = "/tags/project-development/"
+    weight = 3
+  [[menu.main]]
+    name = "Real Estate Finance"
+    url = "/tags/real-estate-finance/"
+    weight = 4
+  [[menu.main]]
+    name = "Thesis"
+    url = "/tags/thesis/"
+    weight = 5
+  [[menu.main]]
+    name = "Reflections"
+    url = "/tags/reflections/"
+    weight = 6
