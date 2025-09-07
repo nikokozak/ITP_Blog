@@ -431,4 +431,4 @@ And finally, **Most Frequent IP's**
 
 We can also look at the most frequent times of attempted connections. We do this by, again, counting all the hours at which the attempted connections were made, and drawing a (horrible, please forgive) distribution chart of the most common times. Interestingly, these happen to be from 14:00 - 20:00.
 
-![Distribution Chart](distro.png)
+![image](distro.png)
