@@ -6,7 +6,7 @@
   --spacing-base: 1.7em;     /* line-height multiplier */
 
   /* Layout: a bit wider measure but still conservative */
-  --container-width: 72ch;   /* was 64ch */
+  --container-width: 66ch;   /* was 64ch */
 }
 
 /* Prefer a humanist sans for body text while keeping mono accents */
@@ -22,7 +22,7 @@
 p {
   font-size: 1rem; /* let base apply via body; keep p neutral */
   line-height: 1.7; /* explicit for safety */
-  margin-top: 0.9em;
+  margin-top: 1.5em;
   margin-bottom: 1.1em;
 }
 
