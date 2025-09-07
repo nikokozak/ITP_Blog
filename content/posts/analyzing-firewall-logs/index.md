@@ -97,14 +97,12 @@ By then moving all of this info into Excel, we can count all occurrences of a gi
 **Most Frequent Ports** *(I've added a description of each port's main purpose)*
 
 <table border="0" cellpadding="0" cellspacing="0" width="365" style="">
-  <thead>
-    <tr height="21" style="height: 16pt;">
-      <th>30303</th>
-      <th>7426</th>
-      <th>Ethereum Client Port</th>
-    </tr>
-  </thead><colgroup><col width="79" style="width: 59pt;"><col width="69" style="width: 52pt;"><col width="217" style="width: 163pt;"></colgroup>
   <tbody>
+    <tr height="21" style="height: 16pt;">
+      <td height="21" align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">30303</td>
+      <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">7426</td>
+      <td style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">Ethereum Client port</td>
+    </tr>
     <tr height="21" style="height: 16pt;">
       <td height="21" align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">53</td>
       <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">571</td>
@@ -156,13 +154,11 @@ By then moving all of this info into Excel, we can count all occurrences of a gi
 **Most Frequent Countries**
 
 <table border="0" cellpadding="0" cellspacing="0" width="207" style="">
-  <thead>
-    <tr height="21" style="height: 16pt;">
-      <th>United States</th>
-      <th>3493</th>
-    </tr>
-  </thead><colgroup><col width="120" style="width: 90pt;"><col width="87" style="width: 65pt;"></colgroup>
   <tbody>
+    <tr height="21" style="height: 16pt;">
+      <td height="21" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">United States</td>
+      <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">3493</td>
+    </tr> 
     <tr height="21" style="height: 16pt;">
       <td height="21" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">Germany</td>
       <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">3163</td>
@@ -225,13 +221,11 @@ By then moving all of this info into Excel, we can count all occurrences of a gi
 **Most Frequent Providers**
 
 <table border="0" cellpadding="0" cellspacing="0" width="440" style="">=
-  <thead>
-    <tr height="21" style="height: 16pt;">
-      <th>Amazon.com, Inc.</th>
-      <th>6995</th>
-    </tr>
-  </thead><colgroup><col width="371" style="width: 278pt;"><col width="69" style="width: 52pt;"></colgroup>
   <tbody>
+    <tr height="21" style="height: 16pt;">
+      <td height="21" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">Amazon.com, Inc.</td>
+      <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">6995</td>
+    </tr>
     <tr height="21" style="height: 16pt;">
       <td height="21" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">cheapy.host LLC</td>
       <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">986</td>
@@ -294,13 +288,11 @@ By then moving all of this info into Excel, we can count all occurrences of a gi
 **Most Frequent Domains**
 
 <table border="0" cellpadding="0" cellspacing="0" width="440" style="">
-  <thead>
-    <tr height="21" style="height: 16pt;">
-      <th>amazon.com</th>
-      <th>6995</th>
-    </tr>
-  </thead><colgroup><col width="353" style="width: 265pt;"><col width="87" style="width: 65pt;"></colgroup>
   <tbody>
+    <tr height="21" style="height: 16pt;">
+      <td height="21" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">amazon.com</td>
+      <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">6995</td>
+    </tr>
     <tr height="21" style="height: 16pt;">
       <td height="21" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">cheapy.host</td>
       <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">986</td>
@@ -363,13 +355,11 @@ By then moving all of this info into Excel, we can count all occurrences of a gi
 And finally, **Most Frequent IP's**
 
 <table border="0" cellpadding="0" cellspacing="0" width="235" style="">
-  <thead>
-    <tr height="21" style="height: 16pt;">
-      <th>18.175.136.85</th>
-      <th>966</th>
-    </tr>
-  </thead><colgroup><col width="148" style="width: 111pt;"><col width="87" style="width: 65pt;"></colgroup>
   <tbody>
+    <tr height="21" style="height: 16pt;">
+      <td height="21" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">18.175.136.85</td>
+      <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">966</td>
+    </tr>
     <tr height="21" style="height: 16pt;">
       <td height="21" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap; height: 16pt;">52.213.121.14</td>
       <td align="right" style="padding-top: 1px; padding-right: 1px; padding-left: 1px; color: black; font-size: 12pt; font-family: Calibri, sans-serif; vertical-align: bottom; border: none; text-wrap-mode: nowrap;">946</td>
