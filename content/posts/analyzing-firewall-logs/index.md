@@ -7,9 +7,12 @@ tags = ['Understanding Networks', 'firewalls']
 
 UFW - the Uncomplicated FireWall - is a default and welcome feature in most Linux distros. The purpose of a firewall, put simply, is to block unwanted requests and connections into your computer.
 
+
 What isn't as obvious is just how many of these requests bombard a server on any given day. This reality becomes clear when we look at the logs that UFW quietly and dilligently puts out, night and day, chronicling the nefarious visitors.
 
+
 As part of the Understanding Networks class, I set up a VPS through DigitalOcean (a basic 1GB machine, running Ubuntu). After some basic provisioning steps, like locking down access to just SSH keys, moving away from the root user, setting up Caddy and a Hugo repo to run my class blogs, etc., I let the VPS rest for a couple of days.
+
 
 What's nice about UFW is that it'll consistently log connection attempts into a file at `/var/logs/ufw.log`. This allows us to do a rudimentary Firewall analysis on connections made to our server. This is what a single connection attempt looks like inside the `ufw.log` file:
 
@@ -17,9 +20,12 @@ What's nice about UFW is that it'll consistently log connection attempts into a 
 2025-09-06T20:56:10.850852+00:00 itpnetworks kernel: [UFW BLOCK] IN=eth0 OUT= MAC=32:cc:1f:83:84:fc:fe:00:00:00:01:01:08:00 SRC=206.123.145.21 DST=157.245.90.47 LEN=52 TOS=0x08 PREC=0x20 TTL=51 ID=10726 PROTO=TCP SPT=38353 DPT=15035 WINDOW=65535 RES=0x00 SYN URGP=0
 ```
 
+
 Of note are the `SRC`, `DPT` (Destination Port), and `PROTO` (which except for a few logs is always TCP).
 
+
 While we could run an analysis as-is, using just this information, I decided to inject some more details using `IPInfo.io`'s API. To do so, and to then turn the file into a usable CSV, I wrote a basic Python script.
+
 
 The core of it is the log Class, which gets populated with all the existing and API-sourced fields:
 
@@ -49,9 +55,12 @@ class LogEntry:
         self.as_domain = "N/A"
 ```
 
+
 Each log item then gets injected with information we receive from a call to IPInfo.io. Doing it this way allows us to tie information to all **14,709** connection attempts we received in the three days the server was up.
 
+
 We first prune the list so as to not submit duplicate id's, this gets us to about **2,000** IP's to submit to the API:
+
 ```python
 # Create pruned log_entry list with only unique entries in order to not overload IPinfo.io API.
 unique_log_entries = []
@@ -60,6 +69,7 @@ for log in logList:
         unique_log_entries.append(log)
 print(f"Reduced to {len(unique_log_entries)} unique log entries based on source IP.")
 ```
+
 
 We then make the call, and set a (maybe too conservative) 1-2 random seconds between request so as to not hit any sort of rate-limiting with the API.
 
@@ -90,9 +100,12 @@ for log in unique_log_entries:
     time.sleep(random.uniform(1, 2))
 ```
 
+
 This populates every IP from our logs with the following fields: **Continent**, **Country**, **ASN** (Autonomous System Number), **AS NAME**, **AS DOMAIN**.
 
+
 By then moving all of this info into Excel, we can count all occurrences of a given IP, Country, etc. The results are quite interesting, especially the outliers.
+
 
 **Most Frequent Ports** *(I've added a description of each port's main purpose)*
 
@@ -108,6 +121,7 @@ By then moving all of this info into Excel, we can count all occurrences of a gi
 | 80 | 41 | HTTP port |
 | 3128 | 32 | Proxy server (squid), encr. vuln |
 | 443 | 30 | HTTPS port |
+
 
 **Most Frequent Countries**
 
@@ -129,6 +143,7 @@ By then moving all of this info into Excel, we can count all occurrences of a gi
 | Russia | 69 |
 | Taiwan | 58 |
 
+
 **Most Frequent Providers**
 
 | Provider | Count |
@@ -148,6 +163,7 @@ By then moving all of this info into Excel, we can count all occurrences of a gi
 | Hurricane Electric LLC | 156 |
 | Nybula LLC | 137 |
 | SKYNET NETWORK LTD | 109 |
+
 
 **Most Frequent Domains**
 
@@ -169,6 +185,7 @@ By then moving all of this info into Excel, we can count all occurrences of a gi
 | he.net | 156 |
 | nybula.com | 137 |
 
+
 And finally, **Most Frequent IP's**
 
 | IP | Count |
@@ -188,6 +205,7 @@ And finally, **Most Frequent IP's**
 | 196.251.83.215 | 107 |
 | 196.251.87.74 | 103 |
 | 206.123.145.4 | 100 |
+
 
 We can also look at the most frequent times of attempted connections. We do this by, again, counting all the hours at which the attempted connections were made, and drawing a (horrible, please forgive) distribution chart of the most common times. Interestingly, these happen to be from 14:00 - 20:00.
 
