@@ -32,3 +32,6 @@ theme = "shibui"
     name = "Reflections"
     url = "/tags/reflections/"
     weight = 6
+
+[markup.goldmark.renderer]
+  unsafe = true

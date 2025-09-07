@@ -51,7 +51,7 @@ class LogEntry:
 
 Each log item then gets injected with information we receive from a call to IPInfo.io. Doing it this way allows us to tie information to all **14,709** connection attempts we received in the three days the server was up.
 
-We first prune the list so as to not submit duplicate id's, this gets us to about **2,000* IP's to submit to the API:
+We first prune the list so as to not submit duplicate id's, this gets us to about **2,000** IP's to submit to the API:
 ```python
 # Create pruned log_entry list with only unique entries in order to not overload IPinfo.io API.
 unique_log_entries = []
