@@ -1,0 +1,62 @@
+/* Readability-focused overrides for the Shibui theme */
+
+:root {
+  /* Typography: slightly larger, more comfortable rhythm */
+  --font-size-base: 1.05rem; /* ~16.8px on typical defaults */
+  --spacing-base: 1.7em;     /* line-height multiplier */
+
+  /* Layout: a bit wider measure but still conservative */
+  --container-width: 72ch;   /* was 64ch */
+}
+
+/* Prefer a humanist sans for body text while keeping mono accents */
+@supports (font-variation-settings: normal) {
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+      Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol";
+  }
+}
+
+/* Paragraph readability */
+p {
+  font-size: 1rem; /* let base apply via body; keep p neutral */
+  line-height: 1.7; /* explicit for safety */
+  margin-top: 0.9em;
+  margin-bottom: 1.1em;
+}
+
+/* Headings: clearer hierarchy, slightly larger, relaxed spacing */
+h1 { font-size: 1.9rem; line-height: 1.25; margin: 1.2em 0 0.6em; }
+h2 { font-size: 1.6rem; line-height: 1.3;  margin: 1.4em 0 0.7em; }
+h3 { font-size: 1.35rem; line-height: 1.35; margin: 1.2em 0 0.6em; }
+h4 { font-size: 1.2rem; line-height: 1.4;  margin: 1.1em 0 0.55em; }
+h5 { font-size: 1.05rem; line-height: 1.5; margin: 1em 0 0.5em; }
+
+/* Lists: breathing room */
+ul, ol { margin-top: 0.5em; margin-bottom: 1em; }
+li { margin: 0.2em 0; }
+
+/* Code blocks: increase readability, allow horizontal scroll if needed */
+pre, code { font-size: 0.95rem; }
+pre { line-height: 1.55; overflow-x: auto; }
+
+/* Tables: compact header, comfortable rows, zebra stripes for scanability */
+table { font-size: 0.98rem; }
+thead th, th { background: rgba(0,0,0,0.02); }
+tbody tr:nth-child(odd) td { background: rgba(0,0,0,0.015); }
+td, th { padding: 0.6em 0.7em; }
+
+/* Images: slightly larger vertical rhythm */
+img { margin: 1.2em auto; }
+
+/* Narrow screens: reduce container padding a bit for space efficiency */
+@media (max-width: 600px) {
+  :root { --container-width: 92vw; }
+  body { padding: 1.25rem; }
+  h1 { font-size: 1.7rem; }
+  h2 { font-size: 1.45rem; }
+  h3 { font-size: 1.25rem; }
+}
+
+
