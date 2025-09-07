@@ -36,6 +36,10 @@ theme = "shibui"
     name = "Reflections"
     url = "/tags/reflections/"
     weight = 7
+  [[menu.main]]
+    name = "CS644"
+    url = "/tags/cs644/"
+    weight = 8c
 
 [markup.goldmark.renderer]
   unsafe = true
