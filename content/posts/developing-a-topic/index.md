@@ -1,6 +1,6 @@
 +++
 date = '2025-09-08T19:35:43-04:00'
-draft = true
+draft = false
 title = 'Developing a Topic'
 tags = ['Project Development']
 +++
