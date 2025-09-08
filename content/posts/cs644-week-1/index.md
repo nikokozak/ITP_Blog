@@ -2,6 +2,7 @@
 date = '2025-09-07T18:35:32-04:00'
 draft = false
 title = 'Cs644 Week 1'
+tags = ['cs644']
 +++
 
 (★) What is the size_t type for in C?
