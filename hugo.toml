@@ -39,7 +39,7 @@ theme = "shibui"
   [[menu.main]]
     name = "CS644"
     url = "/tags/cs644/"
-    weight = 8c
+    weight = 8
 
 [markup.goldmark.renderer]
   unsafe = true
