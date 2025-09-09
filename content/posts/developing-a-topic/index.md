@@ -30,3 +30,6 @@ One of the throughlines in all of these activities is the idea of *sensing* dang
 I think there's a lot to be done around the idea of sensors, interfaces, and devices that dialogue with this idea of human awareness in difficult and unforgiving environments. Part of it as well is being able to extend this sensing to equipment, in order to keep an eye on material fatigue and failure. 
 
 I'm not entirely clear on what shape this will take, but it feels like a beginning.
+
+![image](nav_sheet.JPG)
+*A navigation sheet, created for a night passage through a small channel into a tricky port*
