@@ -5,7 +5,7 @@ title = 'Developing a Topic'
 tags = ['Project Development']
 +++
 
-##Class exercise
+## Class exercise
 
 The first class of Project Development was spent working with Pedro's design framework - a set of cards split into categories, or facets, that together make up the distilled essence of a given project.
 
@@ -17,7 +17,7 @@ The categories are:
 
 The framework is quite useful in that it enforces constraints, and does so at all levels of the project. It's easier to ideate because the core facets are separate, and come together only when the design process begins in earnest, thus deferring friction for a later stage, and encouraging immediate creativity early on.
 
-##Thinking about topic
+## Thinking about topic
 
 I'm leaning towards the idea of **danger**, which can maybe be best described as a series of somewhat related words:
 
