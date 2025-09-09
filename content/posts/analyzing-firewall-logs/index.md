@@ -78,7 +78,7 @@ We then make the call, and set a (maybe too conservative) 1-2 random seconds bet
 print("Enriching log entries with IPinfo.io data...")
 for log in unique_log_entries:
     # Make a request to the IPinfo.io API
-    response = requests.get(f"https://api.ipinfo.io/lite/{log.src_ip}?token=f16eb2292770cb")
+    response = requests.get(f"https://api.ipinfo.io/lite/{log.src_ip}?token=XXXXXXXX")
     print(f"Requesting data for IP {log.src_ip}, status code: {response.status_code}")
     if response.status_code == 200:
         data = response.json()
