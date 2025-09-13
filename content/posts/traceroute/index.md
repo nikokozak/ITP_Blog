@@ -86,10 +86,17 @@ We create a series of `GenServers` which will act as our `NODE`s, in that they w
 We can also create a rudimentary `PACKET` to simulate the `1024`-bit packet the paper suggests.
 
 ```elixir
-    %Packet{
-      bits: <<from_node_pid::256, to_node_pid::256, 0::16, message_size::16, message::binary>>
-    }
+    bits =
+      <<byte_size(from_bin)::16, from_bin::binary,
+        byte_size(to_bin)::16, to_bin::binary,
+        hops::16, ttl::16,
+        byte_size(ack_bin)::16, ack_bin::binary, byte_size(payload)::16,
+        payload::binary>>
+
+    %Packet{bits: bits}
 ```
+
+Of note is that nowadays `hops` is replaced by the concept of TTL entirely, which counts down as it passes through routers - when it gets to 0, the packet is discarded to avoid forever loops. Routers use far more sophisticated ways of path-finding than the RAND hop-table, although conceptually I find the RAND table more elegant.
 
 At this point our basic structure is done.
 
@@ -119,52 +126,287 @@ The basic logic is encompassed in the following `handle_call` callback in our `N
 ```elixir
   @impl true
   def handle_call({:incoming_packet, packet}, from_local_interface_pid, state) do
-    %{from_node: from_node_pid, to_node: to_node_pid, hops: hops, message: _message} =
-      parsed_message = parse_packet(packet)
+     %{
+      from_node: from_node_pid,
+      to_node: to_node_pid,
+      hops: hops,
+      message: _message,
+      ack_to: ack_to,
+      ttl: ttl #defaults do 64
+    } =
+      parse_packet(packet)
 
     state = update_node_map(state, from_node_pid, from_local_interface_pid, hops + 1)
 
-    if is_this_node?(to_node_pid) do
-      IO.puts("Message reached destination: #{inspect(parsed_message)}")
-      # Mark as processed
-      {:reply, :ok, :processed}
+    if hops >= ttl do
+      {:reply, :ok, state} # kill the packet by killing the GenServer state loop
     else
-      # Forward the packet to the fastest known route to the destination node
-      # Otherwise send it out of a random link
-      case fastest_route(state, to_node_pid) do
-        {{_node, link_id}, _hops} ->
-          if link_id != from_local_interface_pid do
-            forward_packet(link_id, Packet.update_hops(packet))
-          end
+```
 
-        nil ->
-          # No known route to the destination node
-          # Send it out of a random link
-          Enum.random(
-            state.interface_pids
-            |> Enum.filter(fn ipid -> ipid != from_local_interface_pid end)
-          )
-          |> forward_packet(Packet.update_hops(packet))
+Here we parse our incoming packet, extracting usable information from our 1024 bits, including:
+**hops** - how many nodes we've jumped through on our way here.
+**ttl** - we incorporate a ttl value into the packet so we don't end up in weird loops on the way to the destination.
+**ack_to** - I've also added an `ack_to` mechanism, where the receiving node returns an `ACK` packet to the sender. This helps with route discovery, as intermediate nodes now know how to rudimentarily route "from" and "to" endpoints, instead of just blindly sending the package forwards.
+
+```elixir
+    if is_this_node?(to_node_pid) do
+      # The traceroute function will create a Packet that incorporates a trace
+      # tuple as its message - {{:trace, list_of_addresses}, {:payload, payload}}.
+      # As the packet passes through the nodes, we append an address to the trace list.
+      annotated = annotate_trace(packet, state)
+
+      # We parse the packet to get the message and extract the payload (granted there's a bit of
+      # duplication here we should get rid of).
+      #TODO: get rid of this duplication, parsing three times by now is idiotic.
+      parsed_for_ack = parse_packet(annotated)
+      IO.puts("Message reached destination: #{inspect(parsed_for_ack)}")
+
+      if ack_to do
+        # This is hacky, but we essentially bypass the whole node mesh and 
+        # send the confirmation back to the original process that requested the traceroute.
+        send(ack_to, {:delivered, self(), hops, parsed_for_ack})
       end
 
+      # We route the ACK back to the source node so it can learn the distance to us, if ack_to is present.
+      maybe_route_ack(parsed_for_ack, state)
+
       {:reply, :ok, state}
+    else
+      # Otherwise, we forward the packet to the next node in the mesh.
+      # This function will check to see if an interface is busy, and if so, it will try the next best route.
+      # If no route is found, it will send the packet out of a random link.
+      try_forward_with_retry(state, to_node_pid, from_local_interface_pid, packet)
+
+      {:reply, :ok, state}
+    end
+```
+
+This is the real core of the logic, annotated as clearly as possible. Essentially, we check to see if the packet was intended for us. If it it was, we also check whether we're requesting an `ack`, in which case we'll send back an `ack` package through the network. Alternatively, we attempt to forward the packet, which involves checking if the node we're attempting to send to is busy, and if so, retrying via a interface (that, importantly, differes from the one we received our packet through).
+
+### Interface Logic
+
+The model here is that a `NODE` must have a given amount of `INTERFACES`. These can be thought of as "network cards" or the like, which are directly connected to a peer interface. This allows a single `NODE` to carry many 1-to-1 connections to other nodes, and keeps our model consistent with how a theoretical RAND network would operate.
+
+In order to achieve this, I'm using `Agents` as symbolic network interfaces. When a `NODE` (GenServer) decides it wants to transmit a packet, it sends it to one of the `Agents` it owns. Conversely, when an `Agent` receives a packet, it sends it back up to its owner (GenServer). 
+
+An `INTERFACE` (Agent) looks like this in code:
+
+```elixir
+    # The initial value should be a map with keys :owner and :paired_link
+    # :owner is the pid of the Node that owns this HardwareLink
+    # :peer_interface is the pid of the HardwareLink that this HardwareLink is connected to
+    def start_link(%{:owner => _owner, :peer_interface => _link} = state) do
+        # Initial values are empty; they will be allocated in a round-robin and
+        # then paired to a Node.
+        Agent.start_link(fn -> state end)
+    end
+```
+
+Our initial state, then, contains the values `:owner`, and `:peer_interface`, each of which describes its connected "hardware" peer, and `Node` owner.
+
+When a `NODE` decides it wants to transmit a packet, it calls one of its "hardware links" in order to do so. We `spawn` a process instead of calling it directly in order to avoid blocking the loop and running into deadlocks (not as relevant with a simple traceroute, but still good manners).
+
+```elixir
+    @spec forward_packet(pid(), any()) :: :ok
+    def forward_packet(interface_pid, packet) do
+        spawn(fn -> HardwareLink.transmit_packet(interface_pid, packet) end)   
+        :ok
+    end
+```
+
+Inside our actual "hardware", the following function handles an attempt at transimission:
+
+```elixir
+     @spec try_transmit(pid(), Packet.t()) :: :ok | :busy | :no_peer
+  def try_transmit(local_interface_pid, packet) do
+    # Check if there is a peer interface (get its pid)
+    peer_interface_pid =
+      Agent.get(local_interface_pid, fn state ->
+        Map.get(state, :peer_interface)
+      end)
+
+    if is_nil(peer_interface_pid) do
+      # No peer interface registered, bad luck
+      :no_peer
+    else
+      # Check if we are busy by simulating a random probability
+      busy_prob = Agent.get(local_interface_pid, fn state -> Map.get(state, :busy_prob, 0.0) end)
+
+      if :rand.uniform() < busy_prob do
+        # Oops, we are busy
+        :busy
+      else
+        # Not busy, try to send the packet to the peer's owner
+        # Importantly, this call is synchronous, so if the peer's owner is busy,
+        # this will block until it can be processed. TODO: figure out if async is possible by implementing a GenServer
+        # That said, it is OK with our model, in that the peer interface handles the actual passing and remote call.
+        Agent.get(peer_interface_pid, fn peer_state ->
+          case Map.get(peer_state, :owner) do
+            nil ->
+              :no_peer
+
+            peer ->
+              RAND.Node.push_packet(peer, packet)
+              :ok
+          end
+        end)
+      end
     end
   end
 ```
 
-To add a bit of realism, our `PACKET` is implemented as a module that encodes everything into a 1024 bit package:
+The packet is "passed" in that the peer `Agent` is prompted to receive and pass the appropriate call to its owner `Node`.
+
+In the future, it might make sense to also make this a `GenServer` or a bare `Erlang` process and implement an actual "mailbox" for our interfaces as well; `Agents` are only naive processes and are not quite suited to message-passing.
+
+## Setting Up
+
+Our system is spawned by specifying a number of nodes and a number of interfaces per node, and then tying these interfaces together, ensuring that interfaces are only tied to external nodes.
 
 ```elixir
-  def make_packet(from_node_pid, to_node_pid, message) do
-    # For simplicity, we will just create a binary with fixed sizes for each field, with hops starting at 0
-    message_size = byte_size(message)
+def spawn_network(num_nodes, interfaces_per_node)
+      when num_nodes > 1 and interfaces_per_node > 0 do
+    # 1) Create all hardware links (one per interface)
+    total_links = num_nodes * interfaces_per_node
 
-    %Packet{
-      bits: <<from_node_pid::256, to_node_pid::256, 0::16, message_size::16, message::binary>>
-    }
+    link_pids =
+      for _ <- 1..total_links do
+        {:ok, pid} = HardwareLink.start_link(%{owner: nil, peer_interface: nil})
+        pid
+      end
+
+    # 2) Group interfaces per node
+    interface_groups = Enum.chunk_every(link_pids, interfaces_per_node)
+
+    # 3) Start nodes with their interface lists and register ownership
+    node_pids =
+      for iface_list <- interface_groups do
+        {:ok, node_pid} = RAND.Node.start_link(iface_list)
+        Enum.each(iface_list, fn iface -> HardwareLink.register_owner(iface, node_pid) end)
+        node_pid
+      end
+
+    # 4) Connect interfaces randomly, avoiding same-owner connections
+    # We'll create a pool of all interfaces and pair them up with constraints.
+    # Simple greedy pairing: repeatedly pick an interface and try to find a peer from a different owner.
+    :ok = randomly_pair_interfaces(interface_groups)
+
+    # 5) Assign simple word addresses and register them on nodes
+    addresses = generate_addresses(length(node_pids))
+
+    Enum.zip(node_pids, addresses)
+    |> Enum.each(fn {pid, addr} -> RAND.Node.register_address(pid, addr) end)
+
+    {node_pids, List.flatten(interface_groups)}
   end
 ```
 
-Of note is that nowadays `hops` is replaced by the concept of TTL, which counts down as it passes through routers - when it gets to 0, the packet is discarded to avoid forever loops.
+This function will return a list of nodes which we can then run operations on, like a traceroute.
 
-### Basic Behavior
+## Traceroute
+
+Finally, we can run the equivalent of a traceroute on our node network. The following procedure shows roughly how that works, using the `iex` shell process.
+
+We first spawn our network, in this case, 200 `NODES` with 3 `INTERFACES` per each node.
+```elixir
+{nodes, _} = RAND.spawn_network(200, 3)
+```
+
+We can list out a directory for these nodes - each node is assigned an `idx` and a `name` in our network (I guess the analogy here would be **ip** and **domain**), where the registry would be a rudimentary DNS.
+
+```elixir
+iex(2)> RAND.directory(nodes)
+[
+  {0, "golden-fox-4857"},
+  {1, "amber-mesh-6913"},
+  {2, "slow-field-5037"},
+  {3, "bright-node-1225"},
+  {4, "golden-stream-8640"},
+  {5, "slow-river-7359"},
+  {6, "golden-link-7880"},
+  {7, "bright-river-4209"},
+  {8, "green-link-6743"},
+  {9, "loud-mesh-6896"},
+  ...
+]
+```
+
+Finally, we can run a traceroute form one node to another. Let's try a series of "naive" traceroutes from node 1 to node 83. Note that `ack_to` in these packets is a reference to the calling process (in this case, our shell), not a Node.
+
+```elixir
+iex(3)> RAND.traceroute(nodes, 1, 83, "hello", timeout: 2000)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.752.0>, to_node: #PID<0.834.0>, hops: 8, ack_to: #PID<0.150.0>}
+{:ok, 8}
+iex(4)> RAND.traceroute(nodes, 1, 83, "hello", timeout: 2000)
+:timeout
+iex(5)> RAND.traceroute(nodes, 1, 83, "hello", timeout: 2000)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.752.0>, to_node: #PID<0.834.0>, hops: 58, ack_to: #PID<0.150.0>}
+{:ok, 58}
+```
+
+Notice that the number of hops varies quite a bit, even giving us timeouts occasionally. This is because our hop tables only know data in a to -> from direction. Sending data again and again in this same direction will not result in a better result; each node knows information about the "past" of the route, and would only be able to use it when sending a message *back* to the original sender. Therefore, the routes don't improve - the message makes it, but that's about it.  
+
+```elixir
+iex(6)> RAND.traceroute(nodes, 83, 1, "hello", timeout: 2000)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.834.0>, to_node: #PID<0.752.0>, hops: 5, ack_to: #PID<0.150.0>}
+{:ok, 5}
+```
+
+We can look at a more detailed traceroute by using `verbose: true`
+
+```elixir
+iex(11)> RAND.traceroute(nodes, 83, 1, "hello", timeout: 2000, verbose: true)
+Message reached destination: %{message: {:trace, ["silver-field-5861", "dark-cloud-3951", "bright-mesh-8170", "golden-river-6804", "amber-stream-1576", "silver-river-1567"], "hello"}, ttl: 64, from_node: #PID<0.834.0>, to_node: #PID<0.752.0>, hops: 5, ack_to: #PID<0.150.0>}
+traceroute to silver-river-1567 from bright-wolf-8599, 5 hops max
+ 1	silver-field-5861
+ 2	dark-cloud-3951
+ 3	bright-mesh-8170
+ 4	golden-river-6804
+ 5	amber-stream-1576
+ 6	silver-river-1567
+{:ok, 5}
+```
+
+On the way back, the story is a very different one - all of a sudden, we get a much more efficient route. This is because the efficiency of these hops *is*, to a degree, encoded in the system. We could accelerate this process in future routes by passing `ack_route: true` to our traceroute, which would make it so that on receipt of a packet, the endpoint sends *back* an acknowledgment packet, thus creating a full-path of information for all hop-tables in all the relevant nodes.
+
+## Calcification
+
+Interestingly, one major downside of the hop-table paradigm is what I'm terming the "calicification" of the route. By this I mean that once a route is established, it'll never really change, no matter how many messages you send. The route is "calcified", in part because there's no situation that would cause any alternate route to be taken from one node to another - they're "perfect" after all, so there's never any downtime, or latency, or blocking.
+
+In order to fix this we need to introduce the concept of a "busy" node, and assign each node a probability of being "busy" at any given time. Doing this means that, on occasion, we have to retry a packet send to a random, unknown node, thus causing a new route to be drawn (and hop tables to be refreshed).
+
+Let's see what happens when we introduce this probability into a traceroute call, after making the same call a couple of times to illustrate a calcified route:
+
+```elixir
+iex(13)> RAND.traceroute(nodes, 83, 1, "hello", timeout: 2000)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.834.0>, to_node: #PID<0.752.0>, hops: 5, ack_to: #PID<0.150.0>}
+{:ok, 5}
+iex(14)> RAND.traceroute(nodes, 83, 1, "hello", timeout: 2000)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.834.0>, to_node: #PID<0.752.0>, hops: 5, ack_to: #PID<0.150.0>}
+{:ok, 5}
+iex(15)> RAND.traceroute(nodes, 83, 1, "hello", timeout: 2000)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.834.0>, to_node: #PID<0.752.0>, hops: 5, ack_to: #PID<0.150.0>}
+{:ok, 5}
+iex(16)> RAND.traceroute(nodes, 83, 1, "hello", timeout: 2000, busy_prob: 0.05)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.834.0>, to_node: #PID<0.752.0>, hops: 31, ack_to: #PID<0.150.0>}
+{:ok, 31}
+iex(17)> RAND.traceroute(nodes, 83, 1, "hello", timeout: 2000, busy_prob: 0.05)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.834.0>, to_node: #PID<0.752.0>, hops: 5, ack_to: #PID<0.150.0>}
+{:ok, 5}
+iex(18)> RAND.traceroute(nodes, 83, 1, "hello", timeout: 2000, busy_prob: 0.05)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.834.0>, to_node: #PID<0.752.0>, hops: 12, ack_to: #PID<0.150.0>}
+{:ok, 12}
+iex(19)> RAND.traceroute(nodes, 83, 1, "hello", timeout: 2000, busy_prob: 0.05)
+Message reached destination: %{message: "hello", ttl: 64, from_node: #PID<0.834.0>, to_node: #PID<0.752.0>, hops: 5, ack_to: #PID<0.150.0>}
+{:ok, 5}
+```
+
+Granted, it because our establishing trace (not shown above) was issued with a `ack_route: true`, the path encoded in the hope tables is already the most efficient. Adding the `busy_prob` shows us that the system can fairly quickly adapt to outages in the network, and return to the "best path" whenever the ideal nodes are back online.
+
+## Remarks
+
+Other than having an excuse to dip into Elixir after many years, this implementation highlights a series of concepts that I think are worth noting. The first is that these "resilient" systems are not particularly intelligent - they can operate quite well on fairly basic algorithms, and can thus be quite cheap to set up and deploy. It proves to me that a lot of the barrier-of-entry into these concepts is to do with nomenclature more than the complexity of the concepts themselves. Even the distinctions between "hardware" and "software" layers become quite easily understood when represented in a system like this one.
+
+It also highlights just how accessible it is to develop new or custom networking protocols. In my case, I'm leaning quite heavily on the affordances provided by Erlang and Elixir, but the point still stands. The true difficulty is standardization and distribution - while the systems might be easy to implement, they're far from easy to distribute. Compliance cannot always be enforced, which I think is, ultimately, the beauty of networked systems like the Internet; as much as we want to make them about technical accomplishment, they're actually the best revindication of what human society can (and perhaps should) be.
+
+This might've been a bit too long of a wormwhole to go down, but I'm hoping I can use this system as a way of mocking up a lot of the concepts we'll look at during the class.
