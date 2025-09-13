@@ -64,9 +64,9 @@ DMZ (demilitarized zone): segregated subnet(s) specifically for systems exposed 
 
 ## Implementing RAND Networks in Elixir/Erlang
 
-I can't understate how *fascinating* I find the RAND Networks paper. I'm very surprised at how simple the fundamental pathfinding algorithm is - the combination of "hot potato" with the routing table tracking hops across nodes. It's incredibly simple yet manages to effortlessly encompass the surreal complexity of tracking and operatinga self-healing system.
+I can't understate how *fascinating* I find the RAND Networks paper. I'm very surprised at how simple the fundamental pathfinding algorithm is - the combination of "hot potato" with the routing table tracking hops across nodes. It's incredibly simple yet manages to effortlessly encompass the surreal complexity of tracking and operating a self-healing system.
 
-I have a long working history with Elixir (a modern offshoot of Erlang). One of the beauties of Erlang is that it allows us to create thousands of lightweight, managed, concurrent processes that excell at message-passing (it was developed as a telephone-switching platform after all). It ocurred to me that this would make modelling the famous RAND "mesh" network described in the paper a fairly easy project, and I could get the pleasure of running my own traceroute against my little network. 
+I have a long working history with Elixir (a modern offshoot of Erlang). One of the beauties of Erlang is that it allows us to create thousands of lightweight, managed, concurrent processes that excell at message-passing (it was developed as a telephone-switching platform after all). It occurred to me that this would make modelling the famous RAND "mesh" network described in the paper a fairly easy project, and I could get the pleasure of running my own traceroute against my little network. 
 
 ### Basic Structure
 
@@ -153,7 +153,7 @@ The basic logic is encompassed in the following `handle_call` callback in our `N
 Here we parse our incoming packet, extracting usable information from our 1024 bits, including:
 **hops** - how many nodes we've jumped through on our way here.
 **ttl** - we incorporate a ttl value into the packet so we don't end up in weird loops on the way to the destination.
-**ack_to** - I've also added an `ack_to` mechanism, where the receiving node returns an `ACK` packet to the sender. This helps with route discovery, as intermediate nodes now know how to rudimentarily route "from" and "to" endpoints, instead of just blindly sending the package forwards.
+**ack_to** - I've also added an `ack_to` mechanism, where the receiving node returns an `ACK` packet to the sender. This helps with route discovery, as intermediate nodes now know how to route "from" and "to" endpoints, instead of just blindly sending the package forwards.
 
 ```elixir
     if is_this_node?(to_node_pid) do
@@ -188,7 +188,7 @@ Here we parse our incoming packet, extracting usable information from our 1024 b
     end
 ```
 
-This is the real core of the logic, annotated as clearly as possible. Essentially, we check to see if the packet was intended for us. If it it was, we also check whether we're requesting an `ack`, in which case we'll send back an `ack` package through the network. Alternatively, we attempt to forward the packet, which involves checking if the node we're attempting to send to is busy, and if so, retrying via a interface (that, importantly, differes from the one we received our packet through).
+This is the real core of the logic, annotated as clearly as possible. Essentially, we check to see if the packet was intended for us. If it it was, we also check whether we're requesting an `ack`, in which case we'll send back an `ack` package through the network. Alternatively, we attempt to forward the packet, which involves checking if the node we're attempting to send to is busy, and if so, retrying via a interface (that, importantly, differs from the one we received our packet through).
 
 ### Interface Logic
 
@@ -221,7 +221,7 @@ When a `NODE` decides it wants to transmit a packet, it calls one of its "hardwa
     end
 ```
 
-Inside our actual "hardware", the following function handles an attempt at transimission:
+Inside our actual "hardware", the following function handles an attempt at transmission:
 
 ```elixir
      @spec try_transmit(pid(), Packet.t()) :: :ok | :busy | :no_peer
@@ -378,7 +378,7 @@ On the way back, the story is a very different one - all of a sudden, we get a m
 
 ## Calcification
 
-Interestingly, one major downside of the hop-table paradigm is what I'm terming the "calicification" of the route. By this I mean that once a route is established, it'll never really change, no matter how many messages you send. The route is "calcified", in part because there's no situation that would cause any alternate route to be taken from one node to another - they're "perfect" after all, so there's never any downtime, or latency, or blocking.
+Interestingly, one major downside of the hop-table paradigm is what I'm terming the "calcification" of the route. By this I mean that once a route is established, it'll never really change, no matter how many messages you send. The route is "calcified", in part because there's no situation that would cause any alternate route to be taken from one node to another - they're "perfect" after all, so there's never any downtime, or latency, or blocking.
 
 In order to fix this we need to introduce the concept of a "busy" node, and assign each node a probability of being "busy" at any given time. Doing this means that, on occasion, we have to retry a packet send to a random, unknown node, thus causing a new route to be drawn (and hop tables to be refreshed).
 
@@ -416,4 +416,4 @@ Other than having an excuse to dip into Elixir after many years, this implementa
 
 It also highlights just how accessible it is to develop new or custom networking protocols. In my case, I'm leaning quite heavily on the affordances provided by Erlang and Elixir, but the point still stands. The true difficulty is standardization and distribution - while the systems might be easy to implement, they're far from easy to distribute. Compliance cannot always be enforced, which I think is, ultimately, the beauty of networked systems like the Internet; as much as we want to make them about technical accomplishment, they're actually the best revindication of what human society can (and perhaps should) be.
 
-This might've been a bit too long of a wormwhole to go down, but I'm hoping I can use this system as a way of mocking up a lot of the concepts we'll look at during the class.
+This might've been a bit too long of a wormhole to go down, but I'm hoping I can use this system as a way of mocking up a lot of the concepts we'll look at during the class.
