@@ -17,16 +17,21 @@ Turns out, (at least for me), the winners are the **Rwanda and Vanuatu** governm
 
 Here's a pair of maps, the first for the Rwandan site and the second for the Vanuatu site:
 
-![image](rwanda_tracroute.png)
+![image](rwanda_traceroute.png)
 ![image](vanuatu_traceroute.png)
 
 Other sites of note are:
 
 `egov.sc` - 16 hops - Seychelles
+
 `presidence.gov.bi` - 16 hops - Burundi
+
 `github.com` - 13 hops w/ tcp 443 - Github!
+
 `reuters.com` - 13 hops w/ tcp 443 - Reuters!
+
 `emol.com` - 12 hops - Chilean news site I read in the mornings
+
 `kiribati.gov.ki` - 10 hops - Kiribati
 
 You'll notice that some sites, like `Github`, display oddly large numbers of hops using a `tcp 443` protocol. The logic for this, apparently, is that servers will often ignore or de-prioritize ICMP requests, essentially making hops "invisible", thus resulting in artificially low numbers. 443 is the standard HTTPS port, and thus it is more likely that servers will respond in kind - often these packets will be routed differently because of this.
@@ -44,7 +49,9 @@ Another interesting AS I found is the one belonging to `NYSERNET` (AS3629). This
 I found it curious that on the edge of the NYU network we always find domains like: `extgwa-dmzgwc.net.nyu.edu`. I looked around a bit, and it seems like the subdomain naming convention is fairly common, and refers to specific interfaces and how they're connected. In this case, `extgwa-dmzgwc` might refer to:
 
 extgw[a|b|c] = external gateway [A/B/C]
+
 dmzgw[a|b|c] = DMZ gateway [A/B/C]
+
 dash between names = point‑to‑point link naming convention (routerA–routerB), sometimes with interface suffixes (e.g., eth11-1 ↔ eth7-1)
 
 I asked an LLM for a bit of help defining what `external gateway` and `DMZ` might mean in this context; here's Claude's answer:
