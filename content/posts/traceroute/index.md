@@ -417,3 +417,5 @@ Other than having an excuse to dip into Elixir after many years, this implementa
 It also highlights just how accessible it is to develop new or custom networking protocols. In my case, I'm leaning quite heavily on the affordances provided by Erlang and Elixir, but the point still stands. The true difficulty is standardization and distribution - while the systems might be easy to implement, they're far from easy to distribute. Compliance cannot always be enforced, which I think is, ultimately, the beauty of networked systems like the Internet; as much as we want to make them about technical accomplishment, they're actually the best revindication of what human society can (and perhaps should) be.
 
 This might've been a bit too long of a wormhole to go down, but I'm hoping I can use this system as a way of mocking up a lot of the concepts we'll look at during the class.
+
+Repo for the code can be found [here](https://github.com/nikokozak/RAND_Network)
