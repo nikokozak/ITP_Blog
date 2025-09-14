@@ -418,4 +418,4 @@ It also highlights just how accessible it is to develop new or custom networking
 
 This might've been a bit too long of a wormhole to go down, but I'm hoping I can use this system as a way of mocking up a lot of the concepts we'll look at during the class.
 
-Repo for the code can be found [here](https://github.com/nikokozak/RAND_Network)
+Repo for the code can be found [here](https://github.com/nikokozak/Understanding_Networks)
