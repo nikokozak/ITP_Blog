@@ -2,6 +2,7 @@
 date = '2025-09-20T20:26:56-04:00'
 draft = false
 title = 'Thesis Respository'
+tags = ['Thesis']
 +++
 
 I think I'm finding the thesis process strange because it clashes quite violently with how I was taught to engage long-form projects, particularly creative ones. 
