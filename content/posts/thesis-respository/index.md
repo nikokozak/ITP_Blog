@@ -41,3 +41,5 @@ So; I'm quite clear on what I want to explore for my thesis, at a technical leve
 - continue on with Licklider, McLuhan, etc.
 
 My hope is that this will buttress and inform the choices I make around the priorities of the system, as well as the framework for presenting the project.
+
+Of the projects I saw presented last year, I think the one that struck me as most interesting was [Zongze's](https://itp.nyu.edu/thesis/archive/2025/11652-zongze-chen/), in that it unmasked and reinterpreted the rigid data structures underlying visual representation of online content.
