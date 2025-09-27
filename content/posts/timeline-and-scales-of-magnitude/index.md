@@ -5,7 +5,7 @@ title = 'Timeline and Scales of Magnitude'
 tags = ['Project Development']
 +++
 
-## Timeline
+# Timeline
 
 | 0      | 1                                                     |
 | :----- | :---------------------------------------------------- |
@@ -22,14 +22,14 @@ tags = ['Project Development']
 | 9-Dec  | Backend infra deployment & celular contract           |
 | 16-Dec | Final Presentation                                    |
 
-## Scales of Magnitude
-#### $10,000 vs. $10
+# Scales of Magnitude
+**$10,000 vs. $10**
 
 **Things that change**: Material selection, sensing method, test equipment, tooling, research extent (purchasing, etc), external hiring (consultants, assistants), marketing & branding.
 
 **Things that don't change**: Core concept, form-factor, software, value proposition.
 
-### $10,000
+## $10,000
 
 Likely the most important thing that changes here is sensor development and testing. With $10,000 it's feasible to not only hire a materials expert for consulting purposes, but also to engage in much more in-depth testing of a much greater variety of materials and ways-of-sensing than would be possible if working with a lower budget.
 
@@ -41,7 +41,7 @@ Likely the most important thing that changes here is sensor development and test
 
 All in all, I again think that a scale of $10,000 dollars is reflected largely in the amount of testing that can be done, in terms of materials, reliability, and sensor design. It might be nice to throw some of that money towards some good branding or advertising.
 
-### $10
+## $10
 
 Things become pretty different at $10. Whereas before we're able to consider the entire scope of a project, here we're somewhat limited and have to become comfortable with a simple (hopefully working) prototype.
 
