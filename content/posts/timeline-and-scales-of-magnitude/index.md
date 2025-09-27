@@ -7,6 +7,7 @@ tags = ['Project Development']
 
 ## Timeline
 
+| 0      | 1                                                     |
 | :----- | :---------------------------------------------------- |
 | 30-Sep | Basic BLE network w/ sensor input, reporting to RBPi  |
 | 7-Oct  | Substrate Material Palette and first conductive print |
