@@ -31,6 +31,6 @@ Regarding Professors to contact:
 
 1. Joerg Blumtritt - Adjunct at ITP, teaches *Politics of Code*. Has a very deep level of technical knowledge, and I was his GA last year. Also has a surprising breadth of philosophical knowledge and its applicability to technology; would be very useful for a lit review.
 2. Carl Skelton - Adjunct at Gallatin and IMA. Taught a class called *Making Virtual Sense*, which cites about half of my sources in its description, and has to do with reimagining how we interact with our ideas in virtual environments.
-3. [**Laine Nooney](https://steinhardt.nyu.edu/user/3296) -** Associate Prof. at Steinhardt. Taught a class called *History of Computing: How the Computer Became Personal*, which is the only class I’ve found in all of NYU that engages computing from a historical perspective.
+3. Laine Nooney - Associate Prof. at Steinhardt. Taught a class called *History of Computing: How the Computer Became Personal*, which is the only class I’ve found in all of NYU that engages computing from a historical perspective.
 
 I think I’ll start by contacting Joerg, and see where that goes. I want to be a bit farther into the practical side of my thesis before beginning these conversations, and I will likely make an earnest effort to reach out more starting December.
