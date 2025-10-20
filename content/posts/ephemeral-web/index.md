@@ -7,7 +7,7 @@ tags = ['Thesis']
 
 # The Internet is a Dead, Immortal Machine
 
-### I. A Pocket Web
+### A Pocket Web
 
 As I was getting on the train, the website fell out of my pocket. I caught a glimpse of it bouncing on the yellow ledge next to the tracks. Back and forth it jumped like a fumbled football, slowly approaching the gap between the platform and the train. I remembered other similar moments: losing my Pokemon Silver Gameboy cartridge, watching my Sony mp3 player get crushed by a car, realizing the drive where I kept pictures of my father was irreparably damaged. Mercifully the small red pendrive made one last leap as if determined to make it onto the 3 train no matter what, and landed inside the car. I picked it up, dusted it off, and for the first time noticed that the little drive felt heavy. Something more than heavy: not commensurate with whatever 64 gigabytes is supposed to feel like, but instead heavy in the way an otherwise light bag might feel heavier if it contains a freshly printed job application, or a significant amount of money. There was something important in here. This drive held a website, and it was the only place in the world it existed.
 
@@ -17,7 +17,7 @@ I spent about a week working on it, and by the end had a functional “network�
 
 And so, I set out to distribute drives and have people create some sites. Out of interest, I also had us rotate - my friend would give me his drive, and I’d pass my own to someone else. This meant that we’d have to steward each other’s sites. Ergo my horror at seeing Sharon’s drive attempt to throw itself into the train tracks. 
 
-### II. Dead Time
+### Dead Time
 
 Pocket Web illustrates a few things, the first being that the internet has a lot to do with time. The inevitable question I get about Pocket Web is: what happens when I want to see the site and it’s not plugged in? And the answer (which should be obvious) is: nothing! Much like LowTech Magazine’s server which is powered by solar and dies on cloudy days, the site simply doesn’t exist when it’s not there. And while on paper this seems too base of an argument to be making, in practice it’s actually quite complex: at an almost instinctual level we expect perfect availability from the network. 24/7, 365 days a year, the network is “on” and ready for business. Yes, a site being down is cause for concern in part because of it’s ripple effects onto other systems, but I think increasingly there’s also a deep psychosomatic response to the event, a sort of disbelief followed closely by anxious attempts at reconnecting. 
 
@@ -25,7 +25,7 @@ This “forever on” is a relatively new thing in our human experience. There i
 
 So, in a way, the internet as we know it is not necessarily so much about interconnection but about time, and more specifically, dead time. This is perhaps its most characteristic quality: its temporal persistence, it’s constant availability, and its uncanny existence beyond-yet-within our own reality are all facets of the mechanized, regimented time that powers it. Servers everywhere hum, continuously and content, in basements and warehouses, with no sense of finality or a timeline ahead. The alternative, a web that is inconsistent, that is unpredictable and available according to our imperfect patterns, is no web at all. The internet is a dead lake, governed by dead time, which we cross countless times but can never really linger on. Perhaps this serves to explain why the dreams of “inhabiting” the web, so pervasive in its early days, never really came about. In Greek Katabasis, stories of descent into the underworld, the protagonist must always emerge into the world of the living: to remain in the world of the dead is a distinctly inhuman thing to do. 
 
-### III. Copy Machines
+### Copy Machines
 
 The most extreme aspect of the Pocket Web is that, because data is singular, losing the drive means losing the data forever. This idea of a single digital repository used to be more common: your Pokemon cartridge not only held the game, but the save states associated with the game. Your mp3 drive might carry songs that you no longer had in your computer. Not that it’s an entirely uncommon thing nowadays - I’m reminded of the man who, having lost his bitcoin wallet, came up with a scheme to buy the entire dump site where he believed it was buried. There is a strong correlation between singularity and value, one that has been studied ad-nauseum by media theorists, the best example being The Work of Art in the Age of Mechanical Reproduction. The modern web works in the opposite direction. The internet is a sort of prism through which data is refracted into millions of copies and derivative assets. The web is not just communicative, otherwise the paradigm would be closer to one-to-one. The web, at a deeper level, is fundamentally multiplicative.
 
@@ -33,7 +33,7 @@ Every packet, cache, backup, shard, is an act of replication, one that exists in
 
 Perhaps the most interesting implication here revolves around the idea of truth. An intuitive understanding of truth places it at a single origin, a source. What happens when a system is predicated on the fragmentation of this truth? At some point, it becomes clear that the dead lake is a lake of simulacra, and the very nature of information is altered so that it becomes a far looser thing: data points that behave more like a murmur of birds than books in a library. Like dead time, which precludes us from inhabiting the web, the multiplicative web dissolves the singular unit of information, and perhaps spills over so that the same thing begins happening in our human world. Pocket Web is not the internet, because its data is finite, singular, and must have a steward: in this sense it is a fantasy. If we are to learn to live with the spillover of this dead lake, with wave upon wave of fractured, cheap data, we must also come to terms with the fact that singular sources of information (truth) are forever a thing of the past.
 
-### IV. Immortality
+### Immortality
 
 Pocket Web has one important (and morbid) quality: it can die. If no one is plugged in to the web, is the web a web at all? If you read through the DARPA papers that first describe resilient digital networks, you realize that their design is informed by a purely military consideration: how do you avoid a shutdown of your communications system if a significant portion of it is bombed out of existence? The answer is to employ some nifty mathematics and elegant pathfinding strategies, and create a network of nodes that can self-heal remarkably well. The internet was designed as a sort of Hydra, that once in place would be impossible to destroy. In an entirely literal way, the internet is immortal.
 
@@ -41,7 +41,7 @@ This begs the question: have we really come to terms with this? Outside of maybe
 
 It is interesting that as the web becomes immortal, so do the thoughts of its largest players turn towards eternal life. Peter Thiel has no qualms admitting he’s vying for immortality: he’s invested heavily in life-extension companies, and is even signed up to a cryopreservation service. The ruling tech class have bought into self-preservation, and in doing so, are fusing with the machine time that has enabled their massive accumulation of wealth. Eternity also implies non-renewal, a freezing of time that has more to do with power than with genuine curiosity for the future. And yet there must be a value in death, even if only poetic: death begets progress, and death is the unifying experience that ties together the entirety of the living world. It follows that there must be some value in reaffirming it through technology: not calling for it, but rather studying how it might texture our experience of the otherwise cold systems we continue building.  
 
-### V. An Ephemeral Web
+### An Ephemeral Web
 
 A week later I shut down the Pocket Web and published the source code. For obvious reasons, people didn’t really stick around to see the project through. That said, every participant made it a point to return their pendrives, and I’m still keeping Sharon’s safe in a drawer at home. By the end, I started describing the Pocket Web as a piece of speculative technology: impractical at heart, but useful as conceptual scaffolding. It’s the sort of project that feels at odds with the ethos of the tech world: there’s no business plan, no open source repo, no post on linked-in or hacker news. There’s no obvious point to it beyond technical experimentation and a broader sense of play.
 
