@@ -1,7 +1,7 @@
 +++
 date = '2025-11-03T00:19:53-05:00'
 draft = false
-title = 'Thesis_making_2'
+title = 'Thesis Making 2'
 tags = ['Thesis']
 +++
 
