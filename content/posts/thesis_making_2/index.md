@@ -2,6 +2,7 @@
 date = '2025-11-03T00:19:53-05:00'
 draft = false
 title = 'Thesis_making_2'
+tags = ['Thesis']
 +++
 
 I'll apologize ahead of time for the format of this post. It's a bit more scattered, largely due to a lack of time on my end. Hopefully it'll somewhat illustrate what the past two weeks have been about.
