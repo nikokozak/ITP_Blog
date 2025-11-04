@@ -1,6 +1,7 @@
 +++
 date = '2025-11-03T21:55:21-05:00'
 title = 'Outage and REST'
+draft = false
 tags = ['Understanding Networks']
 +++
 
