@@ -10,7 +10,8 @@ tags = ['Understanding Networks']
 
 I spent the afternoon putting together the rudiments of a little servlet. My idea, eventually, is to create a small game that teaches users how to best use `curl`. The game would progress from simple `GET` requests to sending multi-part forms and handling cookies, user-agents, etc. I have the basic "curriculum" laid out. The rules for endpoints would go something like:
 
-```Level 6: DELETE with headers
+```
+Level 6: DELETE with headers
 DELETE /level/6/{id} with header Confirm: yes
 {
   "success": true,
@@ -18,7 +19,8 @@ DELETE /level/6/{id} with header Confirm: yes
   "instruction": "Pretend to be a bot: GET /level/7 with custom User-Agent",
   "required_header": "User-Agent: CurlBot/1.0",
   "hint": "curl -H 'User-Agent: CurlBot/1.0' ..."
-}```
+}
+```
 
 Where every reply gives you info on the next endpoint.
 
