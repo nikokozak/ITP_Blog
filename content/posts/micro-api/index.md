@@ -8,6 +8,61 @@ tags = ['Understanding Networks']
 **API Address**: https://api.nkozak.com/
 **Routes**: Start with just `GET`ing the root, it provides instructions.
 
+At the moment the welcome API route responds with:
+
+```
+Welcome! This is my little API.
+
+It is written in Racket, and will continue to grow until the end of class.
+
+
+=== MESSAGE BOARD ===
+
+  GET /message
+
+    Retrieve the current message from the "wall"
+
+
+  POST /message
+
+    Post a message to the wall
+
+    Body: {"name": "Your name", "message": "Something you feel like saying"}
+
+
+=== DYNAMIC COLOR ===
+
+  GET /color
+
+    Returns current RGB color values that evolve smoothly over time
+
+    Response: {"r": 0-255, "g": 0-255, "b": 0-255, "rate": number}
+
+
+  POST /color
+
+    Influence the color evolution
+
+    Body (all optional):
+
+      {"rate": 0-10}        - Speed of color changes (0=frozen, 10=fastest)
+
+      {"r": 0-255}          - Target red value
+
+      {"g": 0-255}          - Target green value
+
+      {"b": 0-255}          - Target blue value
+
+    Example: {"rate": 2.5, "r": 255, "g": 0, "b": 128}
+
+
+=== SYSTEM ===
+
+  GET /health
+
+    Health check endpoint
+```
+
 I spent the afternoon putting together the rudiments of a little servlet. At the moment it fulfills the use-case of the class exercise: an easy-to-use API that responds with some interesting data, that someone else in the class can pull. My idea is to eventually create a small game that teaches users how to best use `curl`. The game would progress from simple `GET` requests to sending multi-part forms and handling cookies, user-agents, etc. I have the basic "curriculum" laid out. The rules for endpoints would go something like:
 
 ```
