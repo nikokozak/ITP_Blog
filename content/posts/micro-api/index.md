@@ -8,7 +8,7 @@ tags = ['Understanding Networks']
 **API Address**: https://api.nkozak.com/
 **Routes**: Start with just `GET`ing the root, it provides instructions.
 
-I spent the afternoon putting together the rudiments of a little servlet. My idea, eventually, is to create a small game that teaches users how to best use `curl`. The game would progress from simple `GET` requests to sending multi-part forms and handling cookies, user-agents, etc. I have the basic "curriculum" laid out. The rules for endpoints would go something like:
+I spent the afternoon putting together the rudiments of a little servlet. At the moment it fulfills the use-case of the class exercise: an easy-to-use API that responds with some interesting data, that someone else in the class can pull. My idea is to eventually create a small game that teaches users how to best use `curl`. The game would progress from simple `GET` requests to sending multi-part forms and handling cookies, user-agents, etc. I have the basic "curriculum" laid out. The rules for endpoints would go something like:
 
 ```
 Level 6: DELETE with headers
